@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeServiceField, addService, fetchService } from '../actions/actionCreators';
+import { changeServiceField/*, addService */, fetchService, editService } from '../actions/actionCreators';
 import LoadingSpinner from './LoadingSpinner';
 import Error from './Error';
 
@@ -24,7 +24,8 @@ function ServiceAdd(props) {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    addService(dispatch, item.name, item.price);
+    // addService(dispatch, item.name, item.price);
+    editService(dispatch, props.history, item);
   }
 
   const handleCancel = evt => {

@@ -145,3 +145,21 @@ export const addService = async (dispatch, name, price) => {
   }
   fetchServices(dispatch);
 }
+
+export const editService = async (dispatch, historyAPI, item) => {
+  dispatch(fetchServiceRequest());
+  try {
+    const response = await fetch(process.env.REACT_APP_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+    });
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    dispatch(fetchServiceSuccess());
+    historyAPI.push('/services');
+  } catch (e) {
+    dispatch(fetchServiceFailure(e.message));
+  }
+}

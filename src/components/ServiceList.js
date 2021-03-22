@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { removeService, fetchServices } from '../actions/actionCreators';
+import { removeService, fetchServices, changeServiceField } from '../actions/actionCreators';
 import LoadingSpinner from './LoadingSpinner';
 import Error from './Error';
 
@@ -22,6 +22,7 @@ function ServiceList(props) {
   }
 
   const handleEdit = id => {
+    dispatch(changeServiceField('id', id));
     props.history.push('/services/' + id);
   }
 

@@ -9,7 +9,12 @@ import {
 } from '../actions/actionTypes'
 
 const initialState = {
-  item: { name: '', price: '', content: ''},
+  item: {
+    id: '',
+    name: '',
+    price: '',
+    content: ''
+  },
   loading: false,
   error: null,
 };
