@@ -6,6 +6,9 @@ import {
   ADD_SERVICE_REQUEST,
   ADD_SERVICE_FAILURE,
   ADD_SERVICE_SUCCESS,
+  FETCH_SERVICE_REQUEST,
+  FETCH_SERVICE_SUCCESS,
+  FETCH_SERVICE_FAILURE
   // REMOVE_SERVICE,
 } from './actionTypes';
 
@@ -54,6 +57,21 @@ export const changeServiceField = (name, value) => ({
   },
 });
 
+export const fetchServiceRequest = () => ({
+  type: FETCH_SERVICE_REQUEST
+});
+
+export const fetchServiceSuccess = () => ({
+  type: FETCH_SERVICE_SUCCESS,
+});
+
+export const fetchServiceFailure = serviceError => ({
+  type: FETCH_SERVICE_FAILURE,
+  payload: {
+    serviceError,
+  }
+});
+
 // export const removeService = id => ({
 //   type: REMOVE_SERVICE,
 //   payload: {
@@ -87,6 +105,26 @@ export const fetchServices = async dispatch => {
     dispatch(fetchServicesSuccess(data));
   } catch (e) {
     dispatch(fetchServicesFailure(e.message));
+  }
+}
+
+export const fetchService = async (dispatch, id) => {
+  dispatch(fetchServiceRequest());
+  try {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/' + id);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const service = await response.json();
+    console.log(service);
+    for (const field in service) {
+      if (field !== 'id') {
+        dispatch(changeServiceField(field, service[field]));
+      }
+    }
+    dispatch(fetchServiceSuccess());
+  } catch (e) {
+    dispatch(fetchServiceFailure(e.message));
   }
 }
 

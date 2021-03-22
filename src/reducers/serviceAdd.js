@@ -3,10 +3,13 @@ import {
   ADD_SERVICE_REQUEST,
   ADD_SERVICE_FAILURE,
   ADD_SERVICE_SUCCESS,
+  FETCH_SERVICE_REQUEST,
+  FETCH_SERVICE_SUCCESS,
+  FETCH_SERVICE_FAILURE
 } from '../actions/actionTypes'
 
 const initialState = {
-  item: { name: '', price: '', },
+  item: { name: '', price: '', content: ''},
   loading: false,
   error: null,
 };
@@ -38,6 +41,25 @@ export default function serviceAddReducer(state = initialState, action) {
           [name]: value,
         }
       };
+    case FETCH_SERVICE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+    case FETCH_SERVICE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null
+      }
+    case FETCH_SERVICE_FAILURE:
+      const {serviceError} = action.payload;
+      return {
+        ...state,
+        loading: false,
+        error: serviceError
+      }
     default:
       return state;
   }

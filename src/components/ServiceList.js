@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { removeService, fetchServices } from '../actions/actionCreators';
-import LoadSpinner from './LoadSpinner';
+import LoadingSpinner from './LoadingSpinner';
+import Error from './Error';
 
 function ServiceList(props) {
   const {items, loading, error} = useSelector(state => state.serviceList);
   const dispatch = useDispatch();
 
+  const [reload, setReload] = useState(false);
+  const reloadComponent = () => {
+    setReload(!reload);
+  }
+
   useEffect(() => {
     fetchServices(dispatch);
-  }, [dispatch])
+  }, [dispatch, reload]);
 
   const handleRemove = id => {
     removeService(dispatch, id);
@@ -23,14 +29,14 @@ function ServiceList(props) {
     // return <p>Loading...</p>;
     return (
       <div className="loader-wrapper">
-        <LoadSpinner />
+        <LoadingSpinner />
       </div>
     )
   }
 
-  if (error) {
-    return <p>Something went wrong try again</p>;
-  }
+  // if (error) return (
+  //   <Error reload={reloadComponent} errorMessage={error} />
+  // );
 
   return (
     <ul>
@@ -41,6 +47,7 @@ function ServiceList(props) {
           <button onClick={() => handleRemove(o.id)}>✕</button>
         </li>
       ))}
+      {error && <Error reload={reloadComponent} errorMessage={error} />}
     </ul>
   );
 }

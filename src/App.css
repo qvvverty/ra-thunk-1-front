@@ -45,3 +45,17 @@
 .hidden {
   display: none;
 }
+
+.error-container {
+  display: inline-block;
+  padding: 10px;
+
+  background-color: #ff000070;
+  border: 1px double;
+}
+
+.reload-btn-container {
+  margin-top: 5px;
+
+  text-align: center;
+}
